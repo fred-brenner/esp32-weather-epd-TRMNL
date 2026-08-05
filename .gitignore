@@ -1,0 +1,6 @@
+# Local credentials and generated certificate material
+.env
+platformio/.env
+platformio/include/secrets.h
+platformio/include/cert.h
+cert/cert.h

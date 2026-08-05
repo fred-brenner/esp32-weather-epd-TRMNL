@@ -134,7 +134,7 @@ void setup()
   printHeapUsage();
 #endif
 
-  disableBuiltinLED();
+  // disableBuiltinLED();
 
   // Open namespace for read/write to non-volatile storage
   prefs.begin(NVS_NAMESPACE, false);
@@ -289,7 +289,10 @@ void setup()
   }
   killWiFi(); // WiFi no longer needed
 
-  // GET INDOOR TEMPERATURE AND HUMIDITY, start BMEx80...
+  // GET INDOOR TEMPERATURE AND HUMIDITY, when a sensor is configured.
+  float inTemp     = NAN;
+  float inHumidity = NAN;
+#if defined(SENSOR_BME280) || defined(SENSOR_BME680)
   pinMode(PIN_BME_PWR, OUTPUT);
   digitalWrite(PIN_BME_PWR, HIGH);
 #if defined(SENSOR_INIT_DELAY_MS) && SENSOR_INIT_DELAY_MS > 0
@@ -297,8 +300,6 @@ void setup()
 #endif
   TwoWire I2C_bme = TwoWire(0);
   I2C_bme.begin(PIN_BME_SDA, PIN_BME_SCL, 100000); // 100kHz
-  float inTemp     = NAN;
-  float inHumidity = NAN;
 #if defined(SENSOR_BME280)
   Serial.print(String(TXT_READING_FROM) + " BME280... ");
   Adafruit_BME280 bme;
@@ -336,6 +337,7 @@ void setup()
     Serial.println(statusStr);
   }
   digitalWrite(PIN_BME_PWR, LOW);
+#endif
 
   String refreshTimeStr;
   getRefreshTimeStr(refreshTimeStr, timeConfigured, &timeInfo);
@@ -367,4 +369,3 @@ void setup()
 void loop()
 {
 } // end loop
-
