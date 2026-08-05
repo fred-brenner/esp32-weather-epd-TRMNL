@@ -36,17 +36,20 @@
 // #define DISP_BW_V1
 
 // E-PAPER DRIVER BOARD
-// The DESPI-C02 is the only officially supported driver board.
+// The TRMNL OG DIY Kit uses the XIAO ESP32-S3 Plus and connects the display
+// directly to the controller. Its UC8179 panel uses the same GxEPD2 display
+// driver as the 7.5in black-and-white panel above.
 // Support for the Waveshare rev2.2 and rev2.3 is deprecated.
 // The Waveshare rev2.2 is no longer in production.
 // Users of the Waveshare rev2.3 have reported experiencing low contrast issues.
 // Uncomment the macro that identifies your driver board hardware.
-#define DRIVER_DESPI_C02
+#define DRIVER_TRMNL
+// #define DRIVER_DESPI_C02
 // #define DRIVER_WAVESHARE
 
 // INDOOR ENVIRONMENT SENSOR
 // Uncomment the macro that identifies your sensor.
-#define SENSOR_BME280
+// #define SENSOR_BME280
 // #define SENSOR_BME680
 
 // If you encounter issues with the BME280 sensor showing no data, uncomment and
@@ -79,7 +82,7 @@
 //   Dutch (Belgium)                 nl_BE
 //   Portuguese (Brazil)             pt_BR
 //   Spanish (Spain)                 es_ES
-#define LOCALE en_US
+#define LOCALE de_DE
 
 // UNITS
 // Define exactly one macro for each measurement type below.
@@ -88,16 +91,16 @@
 //   Metric   : Celsius
 //   Imperial : Fahrenheit
 // #define UNITS_TEMP_KELVIN
-// #define UNITS_TEMP_CELSIUS
-#define UNITS_TEMP_FAHRENHEIT
+#define UNITS_TEMP_CELSIUS
+// #define UNITS_TEMP_FAHRENHEIT
 
 // UNITS - WIND SPEED
 //   Metric   : Kilometers per Hour
 //   Imperial : Miles per Hour
 // #define UNITS_SPEED_METERSPERSECOND
 // #define UNITS_SPEED_FEETPERSECOND
-// #define UNITS_SPEED_KILOMETERSPERHOUR
-#define UNITS_SPEED_MILESPERHOUR
+#define UNITS_SPEED_KILOMETERSPERHOUR
+// #define UNITS_SPEED_MILESPERHOUR
 // #define UNITS_SPEED_KNOTS
 // #define UNITS_SPEED_BEAUFORT
 
@@ -107,8 +110,8 @@
 // #define UNITS_PRES_HECTOPASCALS
 // #define UNITS_PRES_PASCALS
 // #define UNITS_PRES_MILLIMETERSOFMERCURY
-#define UNITS_PRES_INCHESOFMERCURY
-// #define UNITS_PRES_MILLIBARS
+// #define UNITS_PRES_INCHESOFMERCURY
+#define UNITS_PRES_MILLIBARS
 // #define UNITS_PRES_ATMOSPHERES
 // #define UNITS_PRES_GRAMSPERSQUARECENTIMETER
 // #define UNITS_PRES_POUNDSPERSQUAREINCH
@@ -116,8 +119,8 @@
 // UNITS - VISIBILITY DISTANCE
 //   Metric   : Kilometers
 //   Imperial : Miles
-// #define UNITS_DIST_KILOMETERS
-#define UNITS_DIST_MILES
+#define UNITS_DIST_KILOMETERS
+// #define UNITS_DIST_MILES
 
 // UNITS - PRECIPITATION (HOURLY)
 // Measure of precipitation.
@@ -135,9 +138,9 @@
 //   Metric   : Millimeters
 //   Imperial : Inches
 // #define UNITS_DAILY_PRECIP_POP
-// #define UNITS_DAILY_PRECIP_MILLIMETERS
+#define UNITS_DAILY_PRECIP_MILLIMETERS
 // #define UNITS_DAILY_PRECIP_CENTIMETERS
-#define UNITS_DAILY_PRECIP_INCHES
+// #define UNITS_DAILY_PRECIP_INCHES
 
 // Hypertext Transfer Protocol (HTTP)
 // HTTP
@@ -157,8 +160,8 @@
 //   Running cert.py will generate an updated cert.h file.
 // (uncomment exactly one)
 // #define USE_HTTP
-// #define USE_HTTPS_NO_CERT_VERIF
-#define USE_HTTPS_WITH_CERT_VERIF // REQUIRES MANUAL UPDATE WHEN CERT EXPIRES
+#define USE_HTTPS_NO_CERT_VERIF
+// #define USE_HTTPS_WITH_CERT_VERIF // REQUIRES MANUAL UPDATE WHEN CERT EXPIRES
 
 // WIND DIRECTION INDICATOR
 // Choose whether the wind direction indicator should be an arrow, number, or
@@ -194,8 +197,8 @@
 //   (360)                    360   ±0.500°  25,920B  1°
 // Uncomment your preferred wind level direction precision.
 // #define WIND_ICONS_CARDINAL
-// #define WIND_ICONS_INTERCARDINAL
-#define WIND_ICONS_SECONDARY_INTERCARDINAL
+#define WIND_ICONS_INTERCARDINAL
+// #define WIND_ICONS_SECONDARY_INTERCARDINAL
 // #define WIND_ICONS_TERTIARY_INTERCARDINAL
 // #define WIND_ICONS_360
 
@@ -216,8 +219,8 @@
 #define POS_PRESSURE    5
 #define POS_AIR_QULITY  6
 #define POS_VISIBILITY  7
-#define POS_INTEMP      8
-#define POS_INHUMIDITY  9
+// #define POS_INTEMP      8
+// #define POS_INHUMIDITY  9
 // #define POS_MOONRISE    2
 // #define POS_MOONSET     3
 // #define POS_MOONPHASE   4
@@ -293,12 +296,12 @@
 //   provides alerts in English only. Any combination of these factors may make
 //   it undesirable to display alerts in some regions.
 //   Disable alerts by changing the DISPLAY_ALERTS macro to 0.
-#define DISPLAY_ALERTS 1
+#define DISPLAY_ALERTS 0
 
 // STATUS BAR EXTRAS
 //   Extra information that can be displayed on the status bar. Set to 1 to
 //   enable.
-#define STATUS_BAR_EXTRAS_BAT_PERCENTAGE 1
+#define STATUS_BAR_EXTRAS_BAT_PERCENTAGE 0
 #define STATUS_BAR_EXTRAS_BAT_VOLTAGE    0
 #define STATUS_BAR_EXTRAS_WIFI_STRENGTH  1
 #define STATUS_BAR_EXTRAS_WIFI_RSSI      0
@@ -310,7 +313,7 @@
 #define BATTERY_MONITORING 1
 
 // NON-VOLATILE STORAGE (NVS) NAMESPACE
-#define NVS_NAMESPACE "weather_epd"
+#define NVS_NAMESPACE "weather_epd_2"
 
 // DEBUG
 //   If defined, enables increase verbosity over the serial port.
@@ -321,6 +324,7 @@
 
 // Set the below constants in "config.cpp"
 extern const uint8_t PIN_BAT_ADC;
+extern const uint8_t PIN_BAT_ADC_ENABLE;
 extern const uint8_t PIN_EPD_BUSY;
 extern const uint8_t PIN_EPD_CS;
 extern const uint8_t PIN_EPD_RST;
@@ -328,7 +332,6 @@ extern const uint8_t PIN_EPD_DC;
 extern const uint8_t PIN_EPD_SCK;
 extern const uint8_t PIN_EPD_MISO;
 extern const uint8_t PIN_EPD_MOSI;
-extern const uint8_t PIN_EPD_PWR;
 extern const uint8_t PIN_BME_SDA;
 extern const uint8_t PIN_BME_SCL;
 extern const uint8_t PIN_BME_PWR;
@@ -373,12 +376,9 @@ extern const uint32_t MIN_BATTERY_VOLTAGE;
   #error Invalid configuration. Exactly one display panel must be selected.
 #endif
 #if !(  defined(DRIVER_WAVESHARE) \
-      ^ defined(DRIVER_DESPI_C02))
+      ^ defined(DRIVER_DESPI_C02) \
+      ^ defined(DRIVER_TRMNL))
   #error Invalid configuration. Exactly one driver board must be selected.
-#endif
-#if !(  defined(SENSOR_BME280) \
-      ^ defined(SENSOR_BME680))
-  #error Invalid configuration. Exactly one sensor must be selected.
 #endif
 #if !(defined(LOCALE))
   #error Invalid configuration. Locale not selected.

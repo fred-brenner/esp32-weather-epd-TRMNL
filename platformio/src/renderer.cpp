@@ -232,20 +232,18 @@ void drawMultiLnString(int16_t x, int16_t y, const String &text,
  */
 void initDisplay()
 {
-  pinMode(PIN_EPD_PWR, OUTPUT);
-  digitalWrite(PIN_EPD_PWR, HIGH);
-#ifdef DRIVER_WAVESHARE
-  display.init(115200, true, 2, false);
-#endif
-#ifdef DRIVER_DESPI_C02
-  display.init(115200, true, 10, false);
-#endif
-  // remap spi
+  // The XIAO ESP32-S3 does not use the default ESP32 SPI pin mapping.
   SPI.end();
   SPI.begin(PIN_EPD_SCK,
             PIN_EPD_MISO,
             PIN_EPD_MOSI,
             PIN_EPD_CS);
+
+#ifdef DRIVER_WAVESHARE
+  display.init(115200, true, 2, false);
+#elif defined(DRIVER_DESPI_C02) || defined(DRIVER_TRMNL)
+  display.init(115200, true, 10, false);
+#endif
 
   display.setRotation(0);
   display.setTextSize(1);
@@ -263,7 +261,6 @@ void powerOffDisplay()
 {
   display.hibernate(); // turns powerOff() and sets controller to deep sleep for
                        // minimum power use
-  digitalWrite(PIN_EPD_PWR, LOW);
   return;
 } // end initDisplay
 
@@ -1764,4 +1761,3 @@ void drawError(const uint8_t *bitmap_196x196,
                              bitmap_196x196, 196, 196, ACCENT_COLOR);
   return;
 } // end drawError
-

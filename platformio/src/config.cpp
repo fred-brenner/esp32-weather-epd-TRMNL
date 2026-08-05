@@ -17,35 +17,35 @@
 
 #include <Arduino.h>
 #include "config.h"
+#include "secrets.h"
 
 // PINS
-// The configuration below is intended for use with the project's official 
-// wiring diagrams using the FireBeetle 2 ESP32-E microcontroller board.
+// TRMNL 7.5in OG DIY Kit with Seeed Studio XIAO ESP32-S3 Plus.
 //
 // Note: LED_BUILTIN pin will be disabled to reduce power draw.  Refer to your
 //       board's pinout to ensure you avoid using a pin with this shared 
 //       functionality.
 //
 // ADC pin used to measure battery voltage
-const uint8_t PIN_BAT_ADC  = A2; // A0 for micro-usb firebeetle
-// Pins for E-Paper Driver Board
-const uint8_t PIN_EPD_BUSY = 14; // 5 for micro-usb firebeetle
-const uint8_t PIN_EPD_CS   = 13;
-const uint8_t PIN_EPD_RST  = 21;
-const uint8_t PIN_EPD_DC   = 22;
-const uint8_t PIN_EPD_SCK  = 18;
-const uint8_t PIN_EPD_MISO = 19; // 19 Master-In Slave-Out not used, as no data from display
-const uint8_t PIN_EPD_MOSI = 23;
-const uint8_t PIN_EPD_PWR  = 26; // Irrelevant if directly connected to 3.3V
+const uint8_t PIN_BAT_ADC        = A0; // XIAO GPIO1
+const uint8_t PIN_BAT_ADC_ENABLE = A5; // XIAO GPIO6, enables battery measurement
+// TRMNL display pins (GPIO numbers, not XIAO D-labels).
+const uint8_t PIN_EPD_BUSY = 4;
+const uint8_t PIN_EPD_CS   = 44;
+const uint8_t PIN_EPD_RST  = 38;
+const uint8_t PIN_EPD_DC   = 10;
+const uint8_t PIN_EPD_SCK  = 7;
+const uint8_t PIN_EPD_MISO = 8;  // Not used by the panel.
+const uint8_t PIN_EPD_MOSI = 9;
 // I2C Pins used for BME280
-const uint8_t PIN_BME_SDA = 17;
-const uint8_t PIN_BME_SCL = 16;
-const uint8_t PIN_BME_PWR =  4;   // Irrelevant if directly connected to 3.3V
+const uint8_t PIN_BME_SDA = 12;
+const uint8_t PIN_BME_SCL = 14;
+const uint8_t PIN_BME_PWR = 27;   // Irrelevant if directly connected to 3.3V
 const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
 
 // WIFI
-const char *WIFI_SSID     = "ssid";
-const char *WIFI_PASSWORD = "password";
+const char *WIFI_SSID     = WEATHER_WIFI_SSID;
+const char *WIFI_PASSWORD = WEATHER_WIFI_PASSWORD;
 const unsigned long WIFI_TIMEOUT = 10000; // ms, WiFi connection timeout.
 
 // HTTP
@@ -58,7 +58,7 @@ const unsigned HTTP_CLIENT_TCP_TIMEOUT = 10000; // ms
 
 // OPENWEATHERMAP API
 // OpenWeatherMap API key, https://openweathermap.org/
-const String OWM_APIKEY   = "abcdefghijklmnopqrstuvwxyz012345";
+const String OWM_APIKEY   = WEATHER_OWM_API_KEY;
 const String OWM_ENDPOINT = "api.openweathermap.org";
 // OpenWeatherMap One Call 2.5 API is deprecated for all new free users
 // (accounts created after Summer 2022).
@@ -79,15 +79,15 @@ const String OWM_ONECALL_VERSION = "3.0";
 // LOCATION
 // Set your latitude and longitude.
 // (used to get weather data as part of API requests to OpenWeatherMap)
-const String LAT = "40.7128";
-const String LON = "-74.0060";
+const String LAT = "48.2913";
+const String LON = "11.7515";
 // City name that will be shown in the top-right corner of the display.
-const String CITY_STRING = "New York";
+const String CITY_STRING = "Munich";
 
 // TIME
 // For list of time zones see
 // https://github.com/nayarsystems/posix_tz_db/blob/master/zones.csv
-const char *TIMEZONE = "EST5EDT,M3.2.0,M11.1.0";
+const char *TIMEZONE = "CET-1CEST,M3.5.0,M10.5.0/3";
 // Time format used when displaying sunrise/set times. (Max 11 characters)
 // For more information about formatting see
 // https://man7.org/linux/man-pages/man3/strftime.3.html
@@ -101,7 +101,7 @@ const char *HOUR_FORMAT = "%H";      // 24-hour ex: 01   23
 // Date format used when displaying date in top-right corner.
 // For more information about formatting see
 // https://man7.org/linux/man-pages/man3/strftime.3.html
-const char *DATE_FORMAT = "%a, %B %e"; // ex: Sat, January 1
+const char *DATE_FORMAT = "%a, %e. %B"; // ex: Sat, January 1
 // Date/Time format used when displaying the last refresh time along the bottom
 // of the screen.
 // For more information about formatting see
@@ -145,10 +145,10 @@ const int HOURLY_GRAPH_MAX = 24;
 // minutes). Once the battery voltage has fallen to CRIT_LOW_BATTERY_VOLTAGE,
 // the esp32 will hibernate and a manual press of the reset (RST) button to
 // begin operating again.
-const uint32_t WARN_BATTERY_VOLTAGE     = 3535; // (millivolts) ~20%
-const uint32_t LOW_BATTERY_VOLTAGE      = 3462; // (millivolts) ~10%
-const uint32_t VERY_LOW_BATTERY_VOLTAGE = 3442; // (millivolts)  ~8%
-const uint32_t CRIT_LOW_BATTERY_VOLTAGE = 3404; // (millivolts)  ~5%
+const uint32_t WARN_BATTERY_VOLTAGE     = 3400; // (millivolts)
+const uint32_t LOW_BATTERY_VOLTAGE      = 3200; // (millivolts)
+const uint32_t VERY_LOW_BATTERY_VOLTAGE = 3100; // (millivolts)
+const uint32_t CRIT_LOW_BATTERY_VOLTAGE = 3000; // (millivolts)
 const unsigned long LOW_BATTERY_SLEEP_INTERVAL      = 30;  // (minutes)
 const unsigned long VERY_LOW_BATTERY_SLEEP_INTERVAL = 120; // (minutes)
 // Battery voltage calculations are based on a typical 3.7v LiPo.
@@ -163,4 +163,3 @@ const uint32_t MIN_BATTERY_VOLTAGE = 3000; // (millivolts)
 // FONTS
 // ALERTS
 // BATTERY MONITORING
-
