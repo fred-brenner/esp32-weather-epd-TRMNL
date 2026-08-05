@@ -50,11 +50,31 @@ static owm_resp_air_pollution_t owm_air_pollution;
 
 Preferences prefs;
 
+/* Keep the ESP32 awake for a minimum amount of time after each reset. This
+ * preserves the native USB connection long enough to start a firmware upload.
+ */
+void waitForMinimumAwakeTime(unsigned long startTime)
+{
+  const unsigned long elapsedTime = millis() - startTime;
+  if (elapsedTime >= MIN_AWAKE_TIME_MS)
+  {
+    return;
+  }
+
+  const unsigned long remainingTime = MIN_AWAKE_TIME_MS - elapsedTime;
+  Serial.print("Waiting ");
+  Serial.print((remainingTime + 999UL) / 1000UL);
+  Serial.println("s before deep sleep...");
+  delay(remainingTime);
+}
+
 /* Put esp32 into ultra low-power deep sleep (<11μA).
  * Aligns wake time to the minute. Sleep times defined in config.cpp.
  */
 void beginDeepSleep(unsigned long startTime, tm *timeInfo)
 {
+  waitForMinimumAwakeTime(startTime);
+
   if (!getLocalTime(timeInfo))
   {
     Serial.println(TXT_REFERENCING_OLDER_TIME_NOTICE);
@@ -164,6 +184,8 @@ void setup()
       } while (display.nextPage());
       powerOffDisplay();
     }
+
+    waitForMinimumAwakeTime(startTime);
 
     if (batteryVoltage <= CRIT_LOW_BATTERY_VOLTAGE)
     { // critically low battery

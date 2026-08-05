@@ -114,6 +114,9 @@ const char *NTP_SERVER_2 = "time.nist.gov";
 // If you encounter the 'Failed To Fetch The Time' error, try increasing
 // NTP_TIMEOUT or select closer/lower latency time servers.
 const unsigned long NTP_TIMEOUT = 20000; // ms
+// Keep the ESP32 and its USB interface awake for at least this long after each
+// reset, so there is enough time to start a new firmware upload.
+const unsigned long MIN_AWAKE_TIME_MS = 3UL * 60UL * 1000UL; // 3 minutes
 // Sleep duration in minutes. (aka how often esp32 will wake for an update)
 // Aligned to the nearest minute boundary.
 // For example, if set to 30 (minutes) the display will update at 00 or 30
