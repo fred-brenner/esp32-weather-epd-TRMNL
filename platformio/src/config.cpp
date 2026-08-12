@@ -37,10 +37,10 @@ const uint8_t PIN_EPD_DC   = 10;
 const uint8_t PIN_EPD_SCK  = 7;
 const uint8_t PIN_EPD_MISO = 8;  // Not used by the panel.
 const uint8_t PIN_EPD_MOSI = 9;
-// I2C Pins used for BME280
-const uint8_t PIN_BME_SDA = 12;
-const uint8_t PIN_BME_SCL = 14;
-const uint8_t PIN_BME_PWR = 27;   // Irrelevant if directly connected to 3.3V
+// I2C pins used for the BME280 on the EE04/TRMNL module.
+const uint8_t PIN_BME_SDA = 41;   // NFC1
+const uint8_t PIN_BME_SCL = 42;   // NFC2
+const uint8_t PIN_BME_PWR = 27;   // Unused: sensor VIN is connected to 3.3V
 const uint8_t BME_ADDRESS = 0x76; // 0x76 if SDO -> GND; 0x77 if SDO -> VCC
 
 // WIFI

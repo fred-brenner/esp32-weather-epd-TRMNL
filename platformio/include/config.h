@@ -49,7 +49,7 @@
 
 // INDOOR ENVIRONMENT SENSOR
 // Uncomment the macro that identifies your sensor.
-// #define SENSOR_BME280
+#define SENSOR_BME280
 // #define SENSOR_BME680
 
 // If you encounter issues with the BME280 sensor showing no data, uncomment and
@@ -219,8 +219,8 @@
 #define POS_PRESSURE    5
 #define POS_AIR_QULITY  6
 #define POS_VISIBILITY  7
-// #define POS_INTEMP      8
-// #define POS_INHUMIDITY  9
+#define POS_INTEMP      8
+#define POS_INHUMIDITY  9
 // #define POS_MOONRISE    2
 // #define POS_MOONSET     3
 // #define POS_MOONPHASE   4
@@ -301,7 +301,7 @@
 // STATUS BAR EXTRAS
 //   Extra information that can be displayed on the status bar. Set to 1 to
 //   enable.
-#define STATUS_BAR_EXTRAS_BAT_PERCENTAGE 0
+#define STATUS_BAR_EXTRAS_BAT_PERCENTAGE 1
 #define STATUS_BAR_EXTRAS_BAT_VOLTAGE    0
 #define STATUS_BAR_EXTRAS_WIFI_STRENGTH  1
 #define STATUS_BAR_EXTRAS_WIFI_RSSI      0

@@ -130,6 +130,20 @@ This project can be completed without any soldering, if you choose your componen
 
 ### Wiring
 
+For the TRMNL 7.5in OG DIY Kit with the XIAO ESP32-S3 Plus and a BME280,
+connect the sensor as follows:
+
+| BME280 pin | Function   | EE04 connection |
+|------------|------------|-----------------|
+| VIN        | Supply     | 3.3V            |
+| GND        | Ground     | GND             |
+| SCL        | I2C clock  | GPIO42 / NFC2   |
+| SDA        | I2C data   | GPIO41 / NFC1   |
+
+The configured I2C address is `0x76`. Change `BME_ADDRESS` in
+`platformio/src/config.cpp` to `0x77` if the sensor's SDO pin is connected to
+3.3V.
+
 The battery can be charged by plugging the FireBeetle ESP32 into the wall via the USB-C connector while the battery is plugged into the ESP32's JST connector.
 
   > **Warning**

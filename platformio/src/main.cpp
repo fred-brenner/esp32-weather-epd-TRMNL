@@ -315,8 +315,10 @@ void setup()
   float inTemp     = NAN;
   float inHumidity = NAN;
 #if defined(SENSOR_BME280) || defined(SENSOR_BME680)
+#if !defined(DRIVER_TRMNL)
   pinMode(PIN_BME_PWR, OUTPUT);
   digitalWrite(PIN_BME_PWR, HIGH);
+#endif
 #if defined(SENSOR_INIT_DELAY_MS) && SENSOR_INIT_DELAY_MS > 0
   delay(SENSOR_INIT_DELAY_MS);
 #endif
@@ -358,7 +360,9 @@ void setup()
     statusStr = "BME " + String(TXT_NOT_FOUND); // check wiring
     Serial.println(statusStr);
   }
+#if !defined(DRIVER_TRMNL)
   digitalWrite(PIN_BME_PWR, LOW);
+#endif
 #endif
 
   String refreshTimeStr;
